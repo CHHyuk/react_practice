@@ -17,6 +17,7 @@ function App() {
   const onBtnDecreaseClicked_10 = () => {
     setNum(num - 10);
   };
+  
   const [num, setNum] = useState(0);
 
   
