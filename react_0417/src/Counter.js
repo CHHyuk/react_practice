@@ -27,7 +27,7 @@ export default function Counter() {
             <hr />
             {no % 8 == 0 && no != 0 ? <div>8의 배수 입니다.</div> : <div>8의 배수가 아닙니다.</div>}
         </>
-        
+
         // no % 8 == 0 && no != 0 ? (
         //     <>
         //         <hr />
