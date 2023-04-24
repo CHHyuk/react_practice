@@ -32,6 +32,7 @@ function App() {
 
   return (
     <>
+      <NoRecord/>
       <form onSubmit={onSubmit}>
         <input type="text" name="name" placeholder="이름을 입력해주세요" />
         <br />
