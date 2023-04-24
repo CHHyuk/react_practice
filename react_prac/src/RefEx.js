@@ -19,17 +19,22 @@ export default function RefEx() {
     noInputRef.current.focus();
   };
 
-  const removeNo5 = () => {
-    const newRecordedNos = recordedNos.filter((el) => el != 5);
+  // const removeNo5 = () => {
+  //   const newRecordedNos = recordedNos.filter((el) => el != 5);
+  //   setRecordedNos(newRecordedNos);
+  // };
+
+  // const removeFirst = () => {
+  //   setRecordedNos(recordedNos.filter((_,index) => index != 0));
+  // };
+
+  // const removeLast = () => {
+  //   setRecordedNos(recordedNos.filter((_,index) => index != recordedNos.length - 1));
+  // };
+
+  const removeNo = (index) => {
+    const newRecordedNos = recordedNos.filter((_, _index) => _index != index);
     setRecordedNos(newRecordedNos);
-  };
-
-  const removeFirst = () => {
-    setRecordedNos(recordedNos.filter((_,index) => index != 0));
-  };
-
-  const removeLast = () => {
-    setRecordedNos(recordedNos.filter((_,index) => index != recordedNos.length - 1));
   };
 
   // const li = recordedNos.map((el, index) => <li key={index}>{el}</li>);
@@ -54,7 +59,16 @@ export default function RefEx() {
       <hr />
 
       <h1>기록된 숫자 v1</h1>
-      {recordedNos.join(",")}
+      <ul>
+        {recordedNos.map((el, index) => (
+          <li key={index}>
+            <span style={{width: 50, display: "inline-block"}}>{el}</span>
+            <span style={{width: 50, display: "inline-block"}}>{index}</span>
+            <button onClick={() => removeNo(index)}>삭제</button>
+          </li>
+        ))}
+
+      </ul>
 
       <hr />
 
@@ -70,9 +84,10 @@ export default function RefEx() {
         ))}
       </ul> */}
 
-      <button onClick={removeNo5}>숫자 5 삭제</button>
-      <button onClick={removeFirst}>첫 숫자 삭제</button>
-      <button onClick={removeLast}>마지막 숫자 삭제</button>
+      {/* <button onClick={() => removeNo(0)}>인덱스 0 삭제</button>
+      <button onClick={() => removeNo(1)}>인덱스 1 삭제</button>
+      <button onClick={() => removeNo(2)}>인덱스 2 삭제</button>
+      <button onClick={() => removeNo(3)}>인덱스 3 삭제</button> */}
     </>
   );
 }
