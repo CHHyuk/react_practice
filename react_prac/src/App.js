@@ -1,46 +1,36 @@
+import { useState, useRef } from "react"
 import NoRecord from "./NoRecord";
 
 function App() {
-  const onSubmit = (e) => {
-    e.preventDefault();
-    // trim = 양쪽 공백 다 지워줌 [        장한혁          ]
-    e.target.name.value = e.target.name.value.trim();
+  const formInputNoRef = useRef(null);
+  const [no, setNo] = useState("");
 
-    if ( e.target.name.value.length == 0 ) {
-      alert("이름을 입력해주세요")
-      e.target.name.focus();
+  const notice = () => {
+    formInputNoRef.current.focus();
+    if (!no) {
+      alert('숫자를 입력해주세요');
+      formInputNoRef.current.value = '입력해주세요';
       return;
     }
-    e.target.age.value = e.target.age.value.trim();
-
-    if ( e.target.age.value.length == 0 ) {
-      alert("나이를 입력해주세요")
-      e.target.age.focus();
-      return;
-    }
-
-    const name = e.target.name.value;
-    const age = e.target.age.valueAsNumber;
-
-    alert(`이름 : ${name}, 나이 : ${age}`);
-
-    e.target.name.value = '';
-    e.target.age.value = '';
-
-    e.target.focus();
+    alert(`당신이 입력한 숫자는 ${no} 입니다`);
   };
 
   return (
     <>
-      <NoRecord/>
-      <form onSubmit={onSubmit}>
-        <input type="text" name="name" placeholder="이름을 입력해주세요" />
-        <br />
-        <input type="number" name="age" placeholder="나이를 입력해주세요" />  
-        <br />
-        <input type="submit" value="전송"/>
-        {/* <button type="submit" value="전송"></button> 윗줄이랑 같은거*/}
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        notice();
+      }}>
+        <input
+          ref={formInputNoRef} 
+          type="text" 
+          placeholder="숫자" 
+          value={no} 
+          onChange={(e) => setNo(e.target.value)}
+        />
+        <button>실행</button>
       </form>
+      <NoRecord />
     </>
   );
 }
