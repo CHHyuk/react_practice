@@ -1,21 +1,21 @@
 import React, { useState } from "react"
 import classnames from 'https://cdn.skypack.dev/classnames';
 
-let NotifyOnce__workDone = false;
 
 function NotifyOnce({ children }) {
   const [visible, setVisible] = useState(false);
+  const [workDone, setWorkDone] = useState(false);
 
-  if (NotifyOnce__workDone == false) {
+  if (workDone == false) {
     setTimeout(function () {
       setVisible(true);
-    },1000);
+    }, 1000);
 
     setTimeout(function () {
       setVisible(false);
-    },3000);
+    }, 3000);
 
-    NotifyOnce__workDone = true;
+    setWorkDone(true);
   }
 
   return (
@@ -59,9 +59,9 @@ function App() {
       </NotifyOnce>
       <hr className="my-4" />
       <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Iusto quam accusamus esse voluptatem aliquam inventore amet 
-        consectetur labore blanditiis. Ipsa sed maiores non repudiandae 
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Iusto quam accusamus esse voluptatem aliquam inventore amet
+        consectetur labore blanditiis. Ipsa sed maiores non repudiandae
         cupiditate, dignissimos facere consequuntur cumque voluptatibus.
       </div>
     </>
