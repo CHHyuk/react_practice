@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 
 function OrderMainFood({mainFoodCount, setMainFoodCount}) {
   return (
@@ -11,6 +11,9 @@ function OrderMainFood({mainFoodCount, setMainFoodCount}) {
     </>
   )
 }
+
+// 한번 랜더링 하고 변경값이 없으면 랜더링 안함
+const MemoizedOrderMainFood = React.memo(OrderMainFood);
 
 function OrderOpions({selectedCount, options, toggleAllChecked, btnAllChecked, toggleOptionCheck, optionCheckeds}) {
   return (
@@ -31,6 +34,9 @@ function OrderOpions({selectedCount, options, toggleAllChecked, btnAllChecked, t
   )
 }
 
+// 한번 랜더링 하고 변경값이 없으면 랜더링 안함
+const MemoizedOrderOptions = React.memo(OrderOpions);
+
 export default function Order() {
   const [mainFoodCount, setMainFoodCount] = useState(1);
 
@@ -50,16 +56,18 @@ export default function Order() {
   const [optionCheckeds, setOptionCheckeds] = useState(
     new Array(options.length).fill(false)
   );
-
-  const toggleOptionCheck = (index) => {
+  
+  // optionCheckeds가 바뀔때만 이 함수 실행
+  const toggleOptionCheck = useCallback((index) => {
     const newOptioncheckeds = optionCheckeds.map((el, _index) => _index == index ? !el : el);
     setOptionCheckeds(newOptioncheckeds);
-  };
+  },[optionCheckeds]);
 
   const btnAllChecked = useMemo(() => optionCheckeds.every((el) => el), [optionCheckeds]);
   const selectedCount = useMemo(() => optionCheckeds.filter((el) => el).length, [optionCheckeds]);
-
-  const toggleAllChecked = () => {
+  
+  // optionCheckeds가 바뀔때만 이 함수 실행
+  const toggleAllChecked = useCallback(() => {
     if (btnAllChecked) {
       const newOptioncheckeds = optionCheckeds.map((el) => false);
       setOptionCheckeds(newOptioncheckeds);
@@ -69,16 +77,16 @@ export default function Order() {
       const newOptioncheckeds = optionCheckeds.map((el) => true);
       setOptionCheckeds(newOptioncheckeds);
     }
-  };
+  },[optionCheckeds]);
 
   return (
     <>
       <h1>음식 주문</h1>
-      <OrderMainFood
+      <MemoizedOrderMainFood
         setMainFoodCount={setMainFoodCount}
         mainFoodCount={mainFoodCount}
       />
-      <OrderOpions
+      <MemoizedOrderOptions
         selectedCount={selectedCount}
         options={options}
         toggleAllChecked={toggleAllChecked}
