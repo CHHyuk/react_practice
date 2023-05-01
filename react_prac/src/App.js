@@ -1,38 +1,80 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
-let AppCallCount = 0;
+// 소수판별함수
+function isPrimeNumber(no) {
+  for (let i = 2; i < no; i++) {
+      if ( i * i > no) {
+          break
+      }
+
+      if (no % i == 0) {
+          return false;
+      }
+  }
+
+  return true;
+}
+
+// max까지의 소수 리스트
+function getPrimeNumbers(max) {
+  const primeNumbers = [];
+
+  for (let i = 2; i <= max; i++) {
+      if (isPrimeNumber(i)) {
+          primeNumbers.push(i);
+      }
+  }
+
+  return primeNumbers;
+}
+
+// max까지의 소수 리스트의 갯수
+function getPrimeNumbersCount(max) {
+  return getPrimeNumbers(max).length;
+}
 
 function App() {
-  AppCallCount++;
-  console.log(`AppCallCount : ${AppCallCount}`)
-
+  const [inputedNo, setInputedNo] = useState(0);
   const [no, setNo] = useState(0);
-  const [isDark, setIsDark] = useState(false);
 
-  useEffect(() => {
-    const html = document.getElementsByTagName('html')[0];
+  const [primeNumbersCount, setPrimeNumbersCount] = useState(0);
 
-    if (isDark) {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
+  useEffect (() => {
+    const primeNumbersCount = getPrimeNumbersCount(inputedNo);
+    setPrimeNumbersCount(primeNumbersCount);
+  }, [inputedNo]);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+
+    form.number.vaule = form.number.value.trim();
+
+    if (form.number.value.length == 0) {
+      alert('숫자를 입력해주세요.')
+      form.number.focus();
+
+      return
     }
-  },[isDark]);
+
+    const number = form.number.valueAsNumber;
+    form.number.focus();
+
+    setInputedNo(number);
+  };
 
   return (
     <>
-      <div>
-        <button className="btn btn-outline" onClick={() => setNo(no + 1)}>App 버튼 : {no}</button>
+      <button onClick={() => setNo(no + 1)}>번호 : {no}</button>
+      <hr />
+      <form onSubmit={onSubmit}>
+        <input type="number" name="number" placeholder="숫자를 입력해주세요." defaultValue="0" className="input input-bordered"/>
+        <input type="submit" value="확인" className="btn btn-outline"/>
         <hr />
-        <button className="btn btn-outline" onClick={() => setIsDark(!isDark)}>테마토글</button>
-        <hr />
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, laborum soluta nesciunt, minus expedita explicabo enim et reprehenderit accusantium aut repellat, delectus assumenda accusamus non atque fugiat molestiae voluptatem hic!
-        </div>
-
-        <h1 className="color-primary">안녕, 반가워</h1>
-      </div>
-
+        <div>소수의 개수 : {primeNumbersCount}</div> 
+        <div>Max : {inputedNo}</div> 
+      </form>
     </>
   );
 }
