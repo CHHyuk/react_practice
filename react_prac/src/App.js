@@ -37,13 +37,11 @@ function App() {
   const [inputedNo, setInputedNo] = useState(0);
   const [no, setNo] = useState(0);
 
-  const [primeNumbersCount, setPrimeNumbersCount] = useState(0);
-
-  useEffect (() => {
-    const primeNumbersCount = getPrimeNumbersCount(inputedNo);
-    setPrimeNumbersCount(primeNumbersCount);
-  }, [inputedNo]);
-
+  const primeNumbers = () => useMemo(
+    () => getPrimeNumbersCount(inputedNo),
+    [inputedNo]
+  );
+  
   const onSubmit = (e) => {
     e.preventDefault();
 
