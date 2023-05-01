@@ -3,13 +3,13 @@ import React, { useEffect, useState, useMemo } from "react";
 // 소수판별함수
 function isPrimeNumber(no) {
   for (let i = 2; i < no; i++) {
-      if ( i * i > no) {
-          break
-      }
+    if (i * i > no) {
+      break
+    }
 
-      if (no % i == 0) {
-          return false;
-      }
+    if (no % i == 0) {
+      return false;
+    }
   }
 
   return true;
@@ -20,9 +20,9 @@ function getPrimeNumbers(max) {
   const primeNumbers = [];
 
   for (let i = 2; i <= max; i++) {
-      if (isPrimeNumber(i)) {
-          primeNumbers.push(i);
-      }
+    if (isPrimeNumber(i)) {
+      primeNumbers.push(i);
+    }
   }
 
   return primeNumbers;
@@ -33,46 +33,39 @@ function getPrimeNumbersCount(max) {
   return getPrimeNumbers(max).length;
 }
 
-function App() {
-  const [inputedNo, setInputedNo] = useState(0);
-  const [no, setNo] = useState(0);
+function PrimeNosCount({ max }) {
+  const [count, setCount] = useState(0);
 
-  const primeNumbers = () => useMemo(
-    () => getPrimeNumbersCount(inputedNo),
-    [inputedNo]
+  useEffect(() => {
+    const count = getPrimeNumbersCount(max);
+    setCount(count)
+  },[max])
+
+  return (<div style={{ border: '10px solid black', padding: 50 }}>
+    {max}사이에 존재하는 소수의 갯수는 {count}개 이다.
+  </div>
   );
-  
-  const onSubmit = (e) => {
-    e.preventDefault();
+}
 
-    const form = e.target;
+let AppCallCount = 0;
 
-    form.number.vaule = form.number.value.trim();
+function App() {
+  AppCallCount++;
+  console.log(`AppCallCount : ${AppCallCount}`);
 
-    if (form.number.value.length == 0) {
-      alert('숫자를 입력해주세요.')
-      form.number.focus();
-
-      return
-    }
-
-    const number = form.number.valueAsNumber;
-    form.number.focus();
-
-    setInputedNo(number);
-  };
+  const [no, setNo] = useState(0);
 
   return (
     <>
-      <button onClick={() => setNo(no + 1)}>번호 : {no}</button>
+      <PrimeNosCount max={100} />
       <hr />
-      <form onSubmit={onSubmit}>
-        <input type="number" name="number" placeholder="숫자를 입력해주세요." defaultValue="0" className="input input-bordered"/>
-        <input type="submit" value="확인" className="btn btn-outline"/>
-        <hr />
-        <div>소수의 개수 : {primeNumbersCount}</div> 
-        <div>Max : {inputedNo}</div> 
-      </form>
+      <PrimeNosCount max={200} />
+      <hr />
+      <PrimeNosCount max={300} />
+      <hr />
+      <PrimeNosCount max={5000000} />
+      <hr />
+      <button onClick={() => setNo(no + 1)}>버튼 : {no}</button>
     </>
   );
 }
