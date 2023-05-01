@@ -7,17 +7,18 @@ export default function Order() {
     "머스타드 소스",
     "마라 소스",
     "스윗 칠리 소스",
-    "레몬에이드"
+    "레몬에이드",
+    "콜라 1.5",
+    "치킨",
+    "크림 파스타",
+    "포테이토 칩",
+    "치즈",
+    "라면"
   ];
-  
-  const [optionCheckeds, setOptionCheckeds] = useState([
-    false,
-    true,
-    false,
-    false,
-    true,
-    true,
-  ]);
+
+  const [optionCheckeds, setOptionCheckeds] = useState(
+    new Array(options.length).fill(false)
+  );
 
   const toggleOptionCheck = (index) => {
     const newOptioncheckeds = optionCheckeds.map((el, _index) => _index == index ? !el : el);
