@@ -22,9 +22,13 @@ export default function Order() {
     setOptionCheckeds(newOptioncheckeds)
   };
 
+  const btnAllChecked = optionCheckeds.every((el) => el);
+  
   return (
     <>
       <h1>음식 주문</h1>
+      <h2>옵션</h2>
+      <span style={{ paddingLeft: 40 }}>{btnAllChecked ? "[v]" : "[ ]"} 전체선택</span>
       <ul>
         {options.map((option, index) => (
           <li style={{ cursor: "pointer", userSelect: "none" }} key={option} onClick={() => toggleOptionCheck(index)}>
