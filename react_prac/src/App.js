@@ -1,68 +1,42 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 
-// 소수판별함수
-function isPrimeNumber(no) {
-  for (let i = 2; i < no; i++) {
-    if (i * i > no) {
-      break
-    }
+let SubCallCount = 0;
 
-    if (no % i == 0) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-// max까지의 소수 리스트
-function getPrimeNumbers(max) {
-  const primeNumbers = [];
-
-  for (let i = 2; i <= max; i++) {
-    if (isPrimeNumber(i)) {
-      primeNumbers.push(i);
-    }
-  }
-
-  return primeNumbers;
-}
-
-// max까지의 소수 리스트의 갯수
-function getPrimeNumbersCount(max) {
-  return getPrimeNumbers(max).length;
-}
-
-function PrimeNosCount({ max }) {
-  const count = useMemo(() => getPrimeNumbersCount(max),[max]);
-
-
-  return (<div style={{ border: '10px solid black', padding: 50 }}>
-    {max}사이에 존재하는 소수의 갯수는 {count}개 이다.
-  </div>
-  );
-}
-const MomorizedprimeNosCount = React.memo(PrimeNosCount);
-
-let PrimeNosCountCallCount = 0;
-
-function App() {
-  PrimeNosCountCallCount++;
-  console.log(`PrimeNosCountCallCount : ${PrimeNosCountCallCount}`);
-
-  const [no, setNo] = useState(0);
+function Sub({ no1, no2, calculateFunc }) {
+  SubCallCount++;
+  console.log(`SubCallCount : ${SubCallCount}`);
 
   return (
     <>
-      <MomorizedprimeNosCount max={100} />
+      <div style={{ border: "10px solid red", padding: 10 }}>
+        입력 : {no1}, {no2}
+        <br />
+        결과 : {calculateFunc(no1, no2)}
+      </div>
+    </>
+  );
+}
+
+const MemorizedSub = React.memo(Sub);
+
+let AppCallCount = 0;
+
+function App() {
+  AppCallCount++;
+  console.log(`AppCallCount : ${AppCallCount}`);
+
+  const [no1, setNo1] = useState(0);
+  const [no2, setNo2] = useState(0);
+
+  const calculateFunc = useCallback((a,b) => a+b+no1,[no1]);
+
+  return (
+    <>
+      <button onClick={() => setNo1(no1 + 1)}>버튼1 : {no1}</button>
       <hr />
-      <MomorizedprimeNosCount max={200} />
+      <button onClick={() => setNo2(no2 + 1)}>버튼2: {no1}</button>
       <hr />
-      <MomorizedprimeNosCount max={300} />
-      <hr />
-      <MomorizedprimeNosCount max={5000000} />
-      <hr />
-      <button onClick={() => setNo(no + 1)}>버튼 : {no}</button>
+      <MemorizedSub no1={10} no2={20} calculateFunc={calculateFunc}/>
     </>
   );
 }
