@@ -34,12 +34,8 @@ function getPrimeNumbersCount(max) {
 }
 
 function PrimeNosCount({ max }) {
-  const [count, setCount] = useState(0);
+  const count = useMemo(() => getPrimeNumbersCount(max),[max]);
 
-  useEffect(() => {
-    const count = getPrimeNumbersCount(max);
-    setCount(count)
-  },[max])
 
   return (<div style={{ border: '10px solid black', padding: 50 }}>
     {max}사이에 존재하는 소수의 갯수는 {count}개 이다.
@@ -47,11 +43,11 @@ function PrimeNosCount({ max }) {
   );
 }
 
-let AppCallCount = 0;
+let PrimeNosCountCallCount = 0;
 
 function App() {
-  AppCallCount++;
-  console.log(`AppCallCount : ${AppCallCount}`);
+  PrimeNosCountCallCount++;
+  console.log(`PrimeNosCountCallCount : ${PrimeNosCountCallCount}`);
 
   const [no, setNo] = useState(0);
 
