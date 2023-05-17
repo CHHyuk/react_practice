@@ -1,67 +1,114 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { atom, useRecoilValue ,useRecoilState, useSetRecoilState} from "recoil";
+import { atom, atomFamily, useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 
-const page1NoAtom = atom ({
+const pageNoatomFamily = atomFamily({
   key: 'app/page1NoAtom',
-  default: 0
+  default: (pageNo) => pageNo
 })
 
-const page2NoAtom = atom ({
-  key: 'app/page2NoAtom',
-  default: 0
-})
+function usePageCount(pageNo) {
+  const [count, setCount] = useRecoilState(pageNoatomFamily(pageNo));
+
+  const increaseOne = () => setCount(count + 1);
+  const decreaseOne = () => setCount(count - 1);
+  const increaseTen = () => setCount(count + 10);
+  const decreaseTen = () => setCount(count - 10);
+  const clear = () => setCount(0);
+
+  return {
+    count,
+    increaseOne,
+    decreaseOne,
+    increaseTen,
+    decreaseTen,
+    clear,
+  }
+}
 
 function Page1() {
-  const [no, setNo] = useRecoilState(page1NoAtom);
-  const setPage2No = useSetRecoilState(page2NoAtom);
-
-  const onClick =() => setPage2No(0);
-
+  const pageCountState = usePageCount(1);
+  
   return (
     <>
       <div className="text-2xl">페이지1</div>
-
-      <div>
-        <Button variant="contained" onClick={onClick}>페이지 2의 값 초기화</Button>
-      </div>
       <ul>
-        <li>페이지1의 숫자 : {no}</li>
-        <li><Button variant="contained" onClick={() => setNo(no + 5)}>페이지1 숫자 5증가</Button></li>
-        <li><Button variant="contained" onClick={() => setNo(no - 5)}>페이지1 숫자 5감소</Button></li>
+        <li>페이지1의 숫자 : {pageCountState.count}</li>
+        <li><Button variant="contained" onClick={pageCountState.increaseOne}>페이지1 숫자 1증가</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.decreaseOne}>페이지1 숫자 1감소</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.increaseTen}>페이지1 숫자 10증가</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.decreaseTen}>페이지1 숫자 10감소</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.clear}>초기화</Button></li>
       </ul>
     </>
   )
 }
 
 function Page2() {
-  const page1No = useRecoilValue(page1NoAtom)
-  const [no, setNo] = useRecoilState(page2NoAtom);
+  const pageCountState = usePageCount(2);
 
   return (
     <>
       <div className="text-2xl">페이지2</div>
-
-      <div>페이지1의 숫자 : {page1No}</div>
       <ul>
-        <li>페이지2의 숫자 : {no}</li>
-        <li><Button variant="contained" onClick={() => setNo(no + 1)}>페이지2 숫자 1증가</Button></li>
-        <li><Button variant="contained" onClick={() => setNo(0)}>페이지2 숫자 초기화</Button></li>
+        <li>페이지2의 숫자 : {pageCountState.count}</li>
+        <li><Button variant="contained" onClick={pageCountState.increaseOne}>페이지1 숫자 1증가</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.decreaseOne}>페이지1 숫자 1감소</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.increaseTen}>페이지1 숫자 10증가</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.decreaseTen}>페이지1 숫자 10감소</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.clear}>초기화</Button></li>
+      </ul>
+    </>
+  )
+}
+
+function Page3() {
+  const pageCountState = usePageCount(3);
+
+  return (
+    <>
+      <div className="text-2xl">페이지3</div>
+      <ul>
+        <li>페이지3의 숫자 {pageCountState.count}</li>
+        <li><Button variant="contained" onClick={pageCountState.increaseOne}>페이지1 숫자 1증가</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.decreaseOne}>페이지1 숫자 1감소</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.increaseTen}>페이지1 숫자 10증가</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.decreaseTen}>페이지1 숫자 10감소</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.clear}>초기화</Button></li>
+      </ul>
+    </>
+  )
+}
+
+function Page4() {
+  const pageCountState = usePageCount(4);
+
+  return (
+    <>
+      <div className="text-2xl">페이지4</div>
+      <ul>
+        <li>페이지4의 숫자 {pageCountState.count}</li>
+        <li><Button variant="contained" onClick={pageCountState.increaseOne}>페이지1 숫자 1증가</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.decreaseOne}>페이지1 숫자 1감소</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.increaseTen}>페이지1 숫자 10증가</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.decreaseTen}>페이지1 숫자 10감소</Button></li>
+        <li><Button variant="contained" onClick={pageCountState.clear}>초기화</Button></li>
       </ul>
     </>
   )
 }
 
 export default function App() {
-  const [pageName, setPageName] = useState('page1');
-  const switchPage = () => setPageName(pageName == 'page1' ? 'page2' : 'page1')
-
+  const [pageNo, setPageNo] = useState('page1');
+  const switchPage = () => setPageNo(pageNo + 1 <= 4 ? pageNo + 1 : 1);
   return (
     <>
       <Button variant="contained" onClick={switchPage}>스위치</Button>
-      {pageName == 'page1' && <Page1 />}
-      {pageName == 'page2' && <Page2 />}
+      {pageNo == 1 && <Page1 />}
+      {pageNo == 2 && <Page2 />}
+      {pageNo == 3 && <Page3 />}
+      {pageNo == 4 && <Page4 />}
     </>
   );
 }
