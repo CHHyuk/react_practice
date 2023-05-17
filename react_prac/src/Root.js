@@ -1,5 +1,6 @@
 import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
 import App from "./App";
+import { RecoilRoot } from "recoil";
 
 export default function Root() {
     const theme = createTheme({
@@ -17,7 +18,9 @@ export default function Root() {
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <App />
+        <RecoilRoot>
+          <App />
+        </RecoilRoot>
       </ThemeProvider>
     );
   }
