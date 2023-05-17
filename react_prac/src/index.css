@@ -1,6 +1,6 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 
 @font-face {
     font-family: "GmarketSansMedium";
@@ -36,14 +36,14 @@
     border: 10px solid black;
   }
 
-/* 테마 light */
+/* 테마 light
 :root {
   --background-color: white;
   --text-color: #303236;
   --primary-color-1: violet;
 }
 
-/* 테마 dark */
+/* 테마 dark 
 :root.dark {
   --background-color: #303236;
   --text-color: white;
@@ -68,4 +68,4 @@ body, ul, li {
   padding: 0;
   margin: 0;
   list-style: none;
-}
+} */
